@@ -1,0 +1,66 @@
+1.创建一张学生（Student）表
+create table student(
+	sid int primary key auto_increment,
+	sname varchar(20),
+	birthday date,
+	sex char(1)
+)auto_increment=1001;
+
+insert into student(sname,birthday,sex) values('张三','1990-10-10','男'),('李四','1981-10-10','男'),('王五','1981-11-10','女'),('赵六','1988-10-10','男'),('孙七','1989-01-10','女'),('周八','1990-10-10','男'),('张三','1990-06-10','女');
+
+2.创建教师表（Teacher）
+create table teacher(
+	tid int primary key auto_increment,
+	tname varchar(20)
+);
+
+insert into teacher(tname) values('叶平'),('王老师'),('张老师'),('李老师'),('孙老师');
+
+3.创建一张课程表（Course）
+create table course(
+	cid int primary key auto_increment,
+	cname varchar(20),
+	tid int
+);
+
+insert into course(cname,tid) values('企业管理',1),('马克思',2),('UML',3),('数据库',4),('英语',5),('语文',1),('数学',2);
+
+3.创建成绩表（SC）
+create table SC(
+	sid int,
+	cid int,
+	score int
+);
+
+load data infile 'D:\\work\\Java\\sc.txt' into table SC;
+
+4.查询姓“李”的老师的个数
+select count(*) from teacher where tname like '李%';
+
+5.查询男女生人数个数
+select count('男生') from student where sex like '男';
+select count('女生') from student where sex like '女';
+
+6.查询同名同姓学生名单，并统计同名人数
+select count(*),sname from  student group by sname having count(*)>=2;
+
+7.1981年出生的学生名单
+select sname from student where year(birthday)=1981;
+
+8.查询平均成绩大于60分的同学的学号和平均成绩
+select sid,avg(score) from sc group by sid having avg(score)>=60;
+
+9.求选了课程的学生人数
+select count(distinct sid) from sc;
+
+10.查询至少选修两门课程的学生学号
+select  sid from sc group by sid having count(*)>=2;
+
+11.查询各科成绩最高和最低的分。以如下形式显示：课程ID，最高分，最低分
+select cid,max(score),min(score) from sc group by cid;
+
+12.统计每门课程的学生选修人数。要求输出课程号和选修人数，查询结果按人数降序排列，若人数相同，按课程号升序排列
+select cid,count(*) from sc group by cid order by count(*) desc,cid asc;
+
+13.导入scott.sql的数据
+source D:/work/Java/Day-23/笔记/scott.sql
